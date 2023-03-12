@@ -1,7 +1,7 @@
 import java.lang.*;
 
 
-class Card implements Comparable<Card>{
+public class Card implements Comparable<Card>{
 
   private int id;
   private String name;
@@ -19,7 +19,7 @@ class Card implements Comparable<Card>{
   public int getID(){return this.id;}
   public String getName(){return this.name;}
   public Rank getRank(){return this.rank;}
-  public int getRankValue(){return this.rank.showValue();}
+  public int getRankValue(){return this.rank.getValue();}
 
   public long getPrice(){return this.price;}
 
