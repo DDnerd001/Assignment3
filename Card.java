@@ -1,14 +1,14 @@
-import java.lang.*;
+
 
 
 public class Card implements Comparable<Card>{
 
-  private int id;
+  private long id;
   private String name;
   private Rank rank;
   private long price;
 
-  public Card(int id, String name, Rank rank){
+  public Card(long id, String name, Rank rank){
     this.price=0;
     this.id = id;
     this.name = name;
@@ -16,7 +16,7 @@ public class Card implements Comparable<Card>{
 
   }
 
-  public int getID(){return this.id;}
+  public long getID(){return this.id;}
   public String getName(){return this.name;}
   public Rank getRank(){return this.rank;}
   public int getRankValue(){return this.rank.getValue();}
@@ -30,25 +30,44 @@ public class Card implements Comparable<Card>{
   }
 
   @Override
-  public int hashCode(){return this.id;}
+  public int hashCode(){
+    final int prime = 31;
+		int result = 1;
+		result = prime * result + (int) (this.id ^ (this.id >>> 32));
+		result = prime * result + ((this.name == null) ? 0 : this.name.hashCode());
+		result = prime * result + ((this.rank == null) ? 0 : this.rank.hashCode());
+		return result;
+  }
 
-  public boolean equals(Card input){return (this.id==input.getID())&&(this.name.equals(input.getName()))&&(this.rank==input.getRank());}
+  public boolean equals(Object obj){
+    if (this == obj){
+			return true;
+    }
+		if (obj == null){
+			return false;
+    }
+    Card input = (Card) obj;
+    if ((this.name==null)^(input.name==null)){return false;}
+    return (this.id==input.getID())&&(this.name.equals(input.getName()))&&(this.rank==input.getRank());
+  }
 
   @Override
   public int compareTo(Card other){
-    int thisRank = this.getRankValue();
-    int otherRank = other.getRankValue();
-    if(thisRank!=otherRank){
-      return Integer.compare(thisRank, otherRank);
-    } else {
-      int stringCompare = this.name.compareTo(other.getName());
-      if(stringCompare!=0){
-        return stringCompare;
-      }else{
-        return Integer.compare(this.getID(), other.getID());
-      }
+    int stringCompare;
+    int x = Integer.compare(this.getRankValue(), other.getRankValue());
+    if (x!=0){return x;}
+    if ((this.name==null)||(other.name==null)){
+      if (other.name!=null){return -1;}
+      if (this.name!=null){return 1;}
+    }else{
+      stringCompare = this.name.compareTo(other.getName());
+      if(stringCompare!=0){return stringCompare;}
     }
+    return Long.compare(this.getID(), other.getID());
   }
 
 
+
+
 }
+
